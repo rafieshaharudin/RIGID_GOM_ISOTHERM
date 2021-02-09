@@ -1,0 +1,47 @@
+#!/bin/bash --login
+
+# SGE options start with a '#$'
+#$ -S /bin/bash
+
+# run in current working directory
+#$ -cwd
+
+# load latest GROMACS module
+module load apps/intel-17.0/gromacs/2018.4/double
+
+
+# notify when end
+#$ -m bea
+#$ -M mohdrafiebin.shaharudin@postgrad.manchester.ac.uk
+
+
+# set parallel environment and number of cores
+#$ -l short
+#$ -pe smp.pe 12
+
+# define simulation name
+#$ -N CPot7_NVT
+
+# load GROMACS and ANACONDA module
+module load apps/intel-17.0/gromacs/2018.4/double
+module load apps/binapps/anaconda3/2019.07
+
+# Inform software how many cores to use
+export OMP_NUM_THREADS=$NSLOTS
+
+# compile .tpr file equilibration
+gmx_d grompp -p field.top -c input.gro -f nvt.mdp -o input_nvt.tpr
+
+# equilibratrion simulation
+gmx_d mdrun -s input_nvt.tpr -deffnm output_nvt
+
+# get pressure in Z from energy file
+echo 31 0 | gmx_d energy -f output_nvt.edr -o pres_ZZ
+
+# calculate rolling average and create new pressure in Z file for analysis
+ipython rolAve_PZ.py
+
+# housekeeping
+rm pres_ZZ.xvg
+
+# END OF JOB SCRIPT
