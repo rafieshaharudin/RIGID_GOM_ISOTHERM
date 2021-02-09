@@ -6,7 +6,7 @@ import numpy as np
 
 # define desired variables
 
-pressure = np.loadtxt(fname='presZZ.xvg',usecols = 1, skiprows = 800)
+pressure = np.loadtxt(fname='presZZ.txt',usecols = 1, skiprows = 800)
 n_water = np.loadtxt(fname='SRC_MC.txt',usecols = 3, skiprows = 800) # WARNING : need to recheck number of skips !!
 # calculate and print desired stats
 
