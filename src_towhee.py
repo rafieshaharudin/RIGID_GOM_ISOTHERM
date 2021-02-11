@@ -17,9 +17,10 @@ Pres = []
 N_water = []
 count = 0
 
-# find file in  directory that ends with ".txt" and sort in correct sequence (require correct address location)
+# find file in  directory that ends with ".txt" and sort in correct sequence (require correct address location, '.' is the cwd)
 
-for filename in os.listdir(''):
+#for filename in os.listdir('.'):
+for filename in os.listdir(os.getcwd()):	# os.getcwd() gives the cwd address where the code is executed
 	if filename.endswith('.txt'):
 		file_list.append(filename)
 		new_list = Tcl().call('lsort', '-dict', file_list)
@@ -49,7 +50,7 @@ for line in SOL_list:
 # create MC steps for each block printed out (varies depending on block size)
 
 for line in enumerate(SOL_list):
-	count += 10000
+	count += 500000
 
 t = list((range(500000, count+500000, 500000)))
 
